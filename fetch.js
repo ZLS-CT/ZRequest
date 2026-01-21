@@ -197,7 +197,7 @@ export const request = (opts, resolve, reject) => {
             bfreader.close()
             connection.disconnect()
 
-            if (status > 299) return reject(`status code was over 299 (${status}) content: \"${content}\"`)
+            // if (status > 299) return reject(`status code was over 299 (${status}) content: \"${content}\"`)
             if (opts.fullResponse) content = {
                 status: status,
                 message: connection.getResponseMessage(),
