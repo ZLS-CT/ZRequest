@@ -167,13 +167,13 @@ export const request = (opts, resolve, reject) => {
             if (opts.method === "POST" || opts.method === "PUT") handlePost(connection, opts)
 
             const status = connection.getResponseCode()
-            if (opts.method === "OPTIONS") {
-                const headerField = connection.getHeaderFields()
-                const entrySet = headerField.entrySet()
-
-                headers = {}
-                for (let entry of entrySet) {
-                    headers[entry.getKey()] = entry.getValue()
+            const headerField = connection.getHeaderFields()
+            const responseHeaders = {}
+            const keys = headerField.keySet().toArray()
+            for (let i = 0; i < keys.length; i++) {
+                const key = keys[i]
+                if (key != null) {
+                    responseHeaders[key.toLowerCase()] = headerField.get(key).get(0)
                 }
             }
 
@@ -201,7 +201,7 @@ export const request = (opts, resolve, reject) => {
             if (opts.fullResponse) content = {
                 status: status,
                 message: connection.getResponseMessage(),
-                headers,
+                headers: responseHeaders,
                 body: content
             }
 
